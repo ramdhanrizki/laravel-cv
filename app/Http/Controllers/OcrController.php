@@ -13,28 +13,9 @@ class OcrController extends Controller
         $key = env("API_KEY1","");
         $img = $request->file('gambar');
         $imageName = time().'.'.$img->extension();  
-        // dd($imageName);
+
         $request->file('gambar')->move(public_path('uploads'), $imageName);
-        // dd(base_url());
-        // dd($img);
-        // // dd(base64_encode($img), 'image/jpeg');
-        // $response = Http::asForm()->withHeaders([
-        //     'Ocp-Apim-Subscription-Key' => $key,
-        //     'Content-Type'=> 'application/octet-stream'
-        // ])
-        // ->withBody(
-        //     base64_encode(file_get_contents($img)), 'image/jpeg'
-        // )->post($url);
-
-        // $response = Http::asForm()->withHeaders([
-        //     'Ocp-Apim-Subscription-Key' => $key,
-        //     'Content-Type'=> 'application/octet-stream'
-        // ])
-        // ->attach($img)
-        // // ->attach(base64_encode(file_get_contents($img)), 'image/jpeg')
-        // ->post($url);
-        dd(url('uploads')."/$imageName");
-
+       
 
         $response = Http::withHeaders([
                 'Ocp-Apim-Subscription-Key' => $key,
@@ -42,11 +23,16 @@ class OcrController extends Controller
                 'url' => url('uploads')."/$imageName"
             ]);
         
-        dd($response->getBody()->getContents());
-        $response->throw();
-        dd($response);
-        return response()->json($response);
-        // dd($response);  
+        return response()->json([
+            'status' => 200,
+            'message' =>'success',
+            'result' => $response->json()
+        ]);
+    }
+
+    public function example(Request $request)
+    {
+        return view('implementasi');
     }
 }
  
